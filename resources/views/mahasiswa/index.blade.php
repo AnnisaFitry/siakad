@@ -8,6 +8,12 @@
             <div class="float-right my-2">
                 <a class="btn btn-success" href="{{ route('mahasiswa.create') }}"> Input Mahasiswa</a>
             </div>
+            <div class="float-left my-2" style="width: 70%;">
+                <form action="{{ route('search') }}" method="GET">
+                    <input class="form-control" type="text" name="search" placeholder="Nama Mahasiswa" value="{{ old('search') }}" style="display: inline; width: 30%">
+                    <input type="submit" class="btn btn-outline-primary" style="display: inline;" value="Cari">
+                </form>
+            </div>
         </div>
     </div>
 
