@@ -14,5 +14,9 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::resource('mahasiswa', MahasiswaController::class);
 Route::get('/search', [MahasiswaController::class, 'search'])->name('search');
+Route::get('/', [MahasiswaController::class, 'index']);
+Route::get('/mahasiswa/nilai/{mahasiswa}',[MahasiswaController::class,'nilai'])->name('nilai'); 
+

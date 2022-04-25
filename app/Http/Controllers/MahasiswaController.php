@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa; 
+use App\Models\Matakuliah; 
+use App\Models\Mahasiswa_Matakuliah; 
 use Illuminate\Support\Facades\DB;
 use App\Models\Kelas; 
 
@@ -17,7 +19,7 @@ class MahasiswaController extends Controller
     public function index()
     {
         $mahasiswa = Mahasiswa::with('kelas')->get();         
-        $paginate = Mahasiswa::orderBy('id_mahasiswa', 'desc')->paginate(3);
+        $paginate = Mahasiswa::orderBy('id_mahasiswa', 'asc')->paginate(3);
         //return view('mahasiswa.index', compact('mahasiswa'));
         //with('i', (request()->input('page',1) -1) *5);
         return view('mahasiswa.index', ['mahasiswa' => $mahasiswa, 'paginate' => $paginate]);
@@ -154,5 +156,11 @@ class MahasiswaController extends Controller
         $keyword = $request->search;
         $mahasiswa = Mahasiswa::where('nama', 'like', "%" . $keyword . "%")->paginate(5);
         return view('mahasiswa.index', compact('mahasiswa'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+    public function nilai($id_mahasiswa)
+    {
+        $mahasiswa_matakuliah = Mahasiswa_Matakuliah::with('matakuliah')->where('mahasiswa_id', $id_mahasiswa)->get();
+        $mahasiswa_matakuliah->mahasiswa = Mahasiswa::with('kelas')->where('id_mahasiswa', $id_mahasiswa)->first();
+        return view('mahasiswa.nilai', compact('mahasiswa_matakuliah'));
     }
 }
