@@ -35,11 +35,11 @@
                 <th width="280px">Action</th>
             </tr>
 
-            @foreach ($mahasiswa as $mhs)
+            @foreach ($paginate as $mhs)
                 <tr>
                     <td>{{ $mhs ->nim }}</td>
                     <td>{{ $mhs ->nama }}</td>
-                    <td>{{ $mhs ->kelas }}</td>
+                    <td>{{ $mhs ->kelas->nama_kelas }}</td>
                     <td>{{ $mhs ->jurusan }}</td>
                     <td>{{ $mhs ->email }}</td>
                     <td>{{ $mhs ->alamat }}</td>
@@ -56,10 +56,10 @@
                 </tr>
             @endforeach
         </table>
-        Current Page    : {{ $mahasiswa->currentPage() }}<br>
-        Jumlah Data     : {{ $mahasiswa->total() }}<br>
-        Data perhalaman : {{ $mahasiswa->perPage() }}<br>
+        Current Page    : {{ $paginate->currentPage() }}<br>
+        Jumlah Data     : {{ $paginate->total() }}<br>
+        Data perhalaman : {{ $paginate->perPage() }}<br>
         <br>
         <br>
-        {{ $mahasiswa->links() }}
+        {{ $paginate->links() }}
 @endsection
