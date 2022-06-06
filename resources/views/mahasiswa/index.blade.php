@@ -32,6 +32,7 @@
                 <th>Email</th>
                 <th>Alamat</th>
                 <th>Tanggal Lahir</th>
+                <th>Profile</th>
                 <th width="320px">Action</th>
             </tr>
 
@@ -44,8 +45,9 @@
                     <td>{{ $mhs ->email }}</td>
                     <td>{{ $mhs ->alamat }}</td>
                     <td>{{ $mhs ->tanggal_lahir }}</td>
+                    <td><img width="150px" src="{{asset('storage/' . $mhs->image)}}"></td>
                     <td>
-                        <form action="{{ route('mahasiswa.destroy',['mahasiswa'=>$mhs->nim]) }}" method="POST">
+                        <form action="{{ route('mahasiswa.destroy',['mahasiswa'=>$mhs->nim]) }}" method="POST" enctype="multipart/form-data">
                             <a class="btn btn-info" href="{{ route('mahasiswa.show',$mhs->nim) }}">Show</a>
                             <a class="btn btn-primary" href="{{ route('mahasiswa.edit',$mhs->nim) }}">Edit</a>
                             @csrf

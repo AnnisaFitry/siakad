@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use App\Models\Matakuliah; 
 use App\Models\Mahasiswa_Matakuliah; 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Kelas; 
 
 class MahasiswaController extends Controller
@@ -45,6 +46,7 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
+        $image_name = '';
         //melakukan validasi data
         $request->validate([
             'nim' => 'required',
@@ -54,7 +56,11 @@ class MahasiswaController extends Controller
             'Email' => 'required',
             'Alamat' => 'required',
             'Tanggal_Lahir' => 'required',
+            'Image' => 'required|image',
         ]);
+        if($request->file('Image')){
+            $image_name = $request->file('Image')->store('images','public');
+        }
         $mahasiswa = new Mahasiswa;
         $mahasiswa->nim = $request->get('nim');
         $mahasiswa->nama = $request->get('Nama');
@@ -62,6 +68,7 @@ class MahasiswaController extends Controller
         $mahasiswa->email = $request->get('Email');
         $mahasiswa->alamat = $request->get('Alamat');
         $mahasiswa->tanggal_lahir = $request->get('Tanggal_Lahir');
+        $mahasiswa->image = $image_name;
         $mahasiswa->save();
 
         $kelas = new Kelas;
@@ -119,6 +126,7 @@ class MahasiswaController extends Controller
             'Email' => 'required',
             'Alamat' => 'required',
             'Tanggal_Lahir' => 'required',
+            'Image' => 'required|image',
         ]);
         $mahasiswa = Mahasiswa::with('kelas')->where('nim', $nim)->first();
         $mahasiswa->nim = $request->get('nim');
@@ -127,6 +135,12 @@ class MahasiswaController extends Controller
         $mahasiswa->email = $request->get('Email');
         $mahasiswa->alamat = $request->get('Alamat');
         $mahasiswa->tanggal_lahir = $request->get('Tanggal_Lahir');
+        if ($mahasiswa->image && file_exists(storage_path('app/public/' . $mahasiswa->image))) {
+            Storage::delete('public/' . $mahasiswa->image);
+        }
+        
+        $image_name = $request->file('Image')->store('images', 'public');
+        $mahasiswa->image = $image_name;
         $mahasiswa->save();
 
         $kelas = new Kelas;
@@ -147,7 +161,7 @@ class MahasiswaController extends Controller
     public function destroy($nim)
     {
         //fungsi eloquent untuk menghapus data
-        Mahasiswa::find($nim)->delete();
+        Mahasiswa::where('nim',$nim)->delete();
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Mahasiswa Berhasil Dihapus');
     }
