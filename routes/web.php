@@ -19,4 +19,5 @@ Route::resource('mahasiswa', MahasiswaController::class);
 Route::get('/search', [MahasiswaController::class, 'search'])->name('search');
 Route::get('/', [MahasiswaController::class, 'index']);
 Route::get('/mahasiswa/nilai/{mahasiswa}',[MahasiswaController::class,'nilai'])->name('nilai'); 
+Route::get('/mahasiswa/khs/{mahasiswa}', [MahasiswaController::class, 'cetak_khs'])->name('cetak_khs');
 
